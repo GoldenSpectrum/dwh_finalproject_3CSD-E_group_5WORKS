@@ -39,7 +39,7 @@ from ingestion.ops_ingest import (
 default_args = {
     "owner": "shopzada_data_team",
     "start_date": datetime(2025, 1, 1),
-    "retries": 1,
+    "retries": 0,
 }
 
 # -----------------------------------------

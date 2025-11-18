@@ -7,8 +7,12 @@ def get_engine():
     )
 
 
-def load_to_staging(df, table_name):
+def load_to_staging(df, table_name, truncate=True):
     engine = get_engine()
+
+    if truncate:
+        with engine.connect() as conn:
+            conn.execute(f"TRUNCATE TABLE {table_name};")
 
     df.to_sql(
         table_name,
