@@ -2,7 +2,7 @@
 -- DIMENSION TABLES
 -- ================================
 
-CREATE TABLE dim_user (
+CREATE TABLE IF NOT EXISTS dim_user (
     user_id            VARCHAR PRIMARY KEY,
     creation_date      DATE,
     name               VARCHAR,
@@ -20,7 +20,7 @@ CREATE TABLE dim_user (
     issuing_bank       VARCHAR
 );
 
-CREATE TABLE dim_merchant (
+CREATE TABLE IF NOT EXISTS dim_merchant (
     merchant_id     VARCHAR PRIMARY KEY,
     creation_date   DATE,
     name            VARCHAR,
@@ -31,7 +31,7 @@ CREATE TABLE dim_merchant (
     contact_number  VARCHAR
 );
 
-CREATE TABLE dim_staff (
+CREATE TABLE IF NOT EXISTS dim_staff (
     staff_id        VARCHAR PRIMARY KEY,
     name            VARCHAR,
     job_level       VARCHAR,
@@ -43,14 +43,14 @@ CREATE TABLE dim_staff (
     creation_date   DATE
 );
 
-CREATE TABLE dim_product (
+CREATE TABLE IF NOT EXISTS dim_product (
     product_id      VARCHAR PRIMARY KEY,
     product_name    VARCHAR,
     product_type    VARCHAR,
     price           DECIMAL(10,2)
 );
 
-CREATE TABLE dim_campaign (
+CREATE TABLE IF NOT EXISTS dim_campaign (
     campaign_id            VARCHAR PRIMARY KEY,
     campaign_name          VARCHAR,
     campaign_description   TEXT,
@@ -58,7 +58,13 @@ CREATE TABLE dim_campaign (
 );
 
 -- Date dimension: date is the PK
-CREATE TABLE dim_date (
-    date        DATE PRIMARY KEY,
-    date_key    INT
+CREATE TABLE IF NOT EXISTS dim_date (
+    date DATE PRIMARY KEY,
+    year INT,
+    quarter INT,
+    month INT,
+    day INT,
+    day_of_week INT,
+    is_weekend BOOLEAN
 );
+

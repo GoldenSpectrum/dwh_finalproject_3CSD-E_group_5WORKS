@@ -1,5 +1,8 @@
 import sys
 import os
+from airflow.operators.empty import EmptyOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -132,6 +135,15 @@ with DAG(
         python_callable=ingest_order_delays
     )
 
+    finish_ingestion = EmptyOperator(
+        task_id="finish_ingestion"
+    )
+
+    trigger_transform = TriggerDagRunOperator(
+        task_id="trigger_transform_pipeline",
+        trigger_dag_id="shopzada_transform_dag"
+    )
+
     # ===================================================
     # DAG DEPENDENCIES
     # ===================================================
@@ -152,4 +164,6 @@ with DAG(
             ingest_order_data_task,
             ingest_order_delays_task,
         ]
+         >> finish_ingestion
+         >> trigger_transform
     )

@@ -19,3 +19,5 @@ def normalize_df(df, expected_cols):
     df = df[[c for c in df.columns if c in expected_cols]]
 
     return df
+
+
