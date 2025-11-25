@@ -1,1 +1,17 @@
 This is the initialized repository for DWH Course Project of Group 4
+
+If there is an error with running docker, make sure to have docker desktop up.
+
+DO 
+
+docker compose build --no-cache
+
+before doing compose up.
+
+If there is an error in running due to entrypoint.sh
+
+open GitBash in the directory, and run this code
+
+dos2unix airflow/entrypoint.sh
+
+to convert entrypoint into something that can be read by docker
