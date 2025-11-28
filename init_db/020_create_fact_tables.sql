@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS fact_orders (
     order_estimated_arrival INT,
     merchant_id           VARCHAR,
     staff_id              VARCHAR,
-    order_delay_in_days   INT,
 
     CONSTRAINT fk_orders_user
         FOREIGN KEY (user_id) REFERENCES dim_user(user_id),
