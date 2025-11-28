@@ -1,6 +1,5 @@
 import pandas as pd
-from ingestion.db import load_to_staging, truncate_table
-from ingestion.utils import normalize_df
+from ingestion.utils import load_to_staging, truncate_table, dedupe, normalize_df   # updated import
 
 DATA_PATH = "/opt/airflow/data_raw/marketing/"
 
@@ -18,6 +17,10 @@ def ingest_campaign_data():
     ]
 
     df = normalize_df(df, expected)
+
+    # ensure no duplicate campaign IDs
+    df = dedupe(df, key="campaign_id")
+
     load_to_staging(df, "stg_campaign_data")
 
 
@@ -36,4 +39,11 @@ def ingest_transactional_campaign_data():
     ]
 
     df = normalize_df(df, expected)
+
+    # dedupe based on campaign + order + date combo (best surrogate key)
+    df = dedupe(
+        df,
+        key=["campaign_id", "order_id", "transaction_date"]
+    )
+
     load_to_staging(df, "stg_transactional_campaign")
