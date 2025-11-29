@@ -55,12 +55,15 @@ CREATE TABLE IF NOT EXISTS dim_campaign (
 );
 
 CREATE TABLE IF NOT EXISTS dim_date (
-    date_id      SERIAL PRIMARY KEY,
-    date_value   DATE UNIQUE NOT NULL,
-    date_year    INT,
-    date_quarter INT,
-    date_month   INT,
-    date_day     INT,
-    day_of_week  INT,
-    is_weekend   BOOLEAN
+    date_id          SERIAL PRIMARY KEY,
+    date_value       DATE UNIQUE NOT NULL,
+    date_year        INT,
+    date_quarter     INT,
+    date_month       INT,
+    date_day         INT,
+    day_of_week      INT,
+    is_weekend       BOOLEAN,
+    week_start_date  DATE,
+    week_of_year     INT
 );
+
