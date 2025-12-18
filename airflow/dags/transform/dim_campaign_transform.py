@@ -1,8 +1,7 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df_insert_only, truncate_table
 import pandas as pd
 
 def transform_dim_campaign():
-    truncate_table("dim_campaign")
 
     df = fetch_df("SELECT * FROM stg_campaign_data")
 
@@ -29,4 +28,4 @@ def transform_dim_campaign():
         "campaign_description", "campaign_discount"
     ]]
 
-    load_df(df, "dim_campaign")
+    load_df_insert_only(df, "dim_campaign")

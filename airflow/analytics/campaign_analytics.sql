@@ -30,7 +30,8 @@ FROM fact_campaign_transactions f
 JOIN fact_orders o
     ON f.order_id = o.order_id
 JOIN dim_user u
-    ON o.user_id = u.user_id
+    ON o.user_sk = u.user_sk
+    AND u.is_current = true
 JOIN fact_line_items li
     ON li.order_id = o.order_id
 GROUP BY u.user_full_name
@@ -48,7 +49,8 @@ FROM fact_campaign_transactions f
 JOIN fact_orders o
     ON f.order_id = o.order_id
 JOIN dim_user u
-    ON o.user_id = u.user_id
+    ON o.user_sk = u.user_sk
+    AND u.is_current = true
 WHERE f.transaction_availed = TRUE
 GROUP BY u.user_type
 ORDER BY total_redemptions DESC;
@@ -79,16 +81,16 @@ ORDER BY conversion_rate_pct DESC;
 -- -----------------------------------------------------
 CREATE OR REPLACE VIEW campaign_repeat_purchases AS
 WITH repeat_users AS (
-    SELECT user_id
+    SELECT user_sk
     FROM fact_orders
-    GROUP BY user_id
+    GROUP BY user_sk
     HAVING COUNT(order_id) > 1
 )
 SELECT
     c.campaign_name,
-    COUNT(DISTINCT o.user_id) AS unique_users,
+    COUNT(DISTINCT o.user_sk) AS unique_users,
     COUNT(DISTINCT CASE
-        WHEN o.user_id IN (SELECT user_id FROM repeat_users)
+        WHEN o.user_sk IN (SELECT user_sk FROM repeat_users)
         THEN o.order_id
     END) AS repeat_purchase_count
 FROM fact_campaign_transactions f

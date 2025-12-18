@@ -27,7 +27,8 @@ FROM fact_order_delays d
 JOIN fact_orders o
     ON d.order_id = o.order_id
 JOIN dim_merchant m
-    ON o.merchant_id = m.merchant_id
+    ON o.merchant_sk = m.merchant_sk
+    AND m.is_current = true
 WHERE d.delay_in_days > 0
 GROUP BY m.merchant_name
 ORDER BY delayed_orders DESC;
@@ -44,7 +45,8 @@ FROM fact_order_delays d
 JOIN fact_orders o
     ON d.order_id = o.order_id
 JOIN dim_merchant m
-    ON o.merchant_id = m.merchant_id
+    ON o.merchant_sk = m.merchant_sk
+    AND m.is_current = true
 GROUP BY m.merchant_name
 ORDER BY avg_delay_days DESC;
 

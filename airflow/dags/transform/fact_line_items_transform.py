@@ -1,7 +1,6 @@
 from transform.utils import fetch_df, load_df, truncate_table
 
 def transform_fact_line_items():
-    truncate_table("fact_line_items")
 
     prices = fetch_df("SELECT * FROM stg_line_item_prices")
     products = fetch_df("SELECT * FROM stg_line_item_products")
@@ -36,4 +35,9 @@ def transform_fact_line_items():
         "line_item_product_name"
     ]]
 
-    load_df(df, "fact_line_items")
+    load_df(
+    df,
+    "fact_line_items",
+    conflict_cols=["order_id", "product_id"]
+)
+

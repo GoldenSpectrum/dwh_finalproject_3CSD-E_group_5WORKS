@@ -1,7 +1,6 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df_scd2
 
 def transform_dim_merchant():
-    truncate_table("dim_merchant")
 
     df = fetch_df("SELECT * FROM stg_merchant_data")
 
@@ -32,4 +31,16 @@ def transform_dim_merchant():
         "merchant_contact_number"
     ]]
 
-    load_df(df, "dim_merchant")
+    load_df_scd2(
+        df, 
+        table_name="dim_merchant", 
+        business_key="merchant_id",
+        tracked_cols=[
+            "merchant_name",
+            "merchant_street_address",
+            "merchant_state",
+            "merchant_city",
+            "merchant_country",
+            "merchant_contact_number"
+        ]
+    )

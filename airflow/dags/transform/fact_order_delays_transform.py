@@ -1,7 +1,6 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df
 
 def transform_fact_order_delays():
-    truncate_table("fact_order_delays")
 
     delays = fetch_df("SELECT * FROM stg_order_delays")
     orders = fetch_df("SELECT order_id FROM fact_orders")
@@ -14,4 +13,9 @@ def transform_fact_order_delays():
 
     delays = delays[["order_id", "delay_in_days"]]
 
-    load_df(delays, "fact_order_delays")
+    load_df(
+    delays,
+    "fact_order_delays",
+    conflict_cols=["order_id"]
+)
+

@@ -1,7 +1,6 @@
 from transform.utils import fetch_df, load_df, truncate_table
 
 def transform_fact_campaign_transaction():
-    truncate_table("fact_campaign_transactions")
 
     df = fetch_df("SELECT * FROM stg_transactional_campaign")
 
@@ -24,4 +23,8 @@ def transform_fact_campaign_transaction():
         "transaction_availed"
     ]]
 
-    load_df(df, "fact_campaign_transactions")
+    load_df(
+        df,
+        "fact_campaign_transactions",
+        conflict_cols=["transaction_date", "campaign_id", "order_id"]
+    )

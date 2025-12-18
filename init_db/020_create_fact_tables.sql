@@ -5,22 +5,24 @@
 ------------------------------------
 -- 1. FACT ORDERS
 ------------------------------------
-CREATE TABLE IF NOT EXISTS fact_orders (
-    order_id              VARCHAR PRIMARY KEY,
-    user_id               VARCHAR,
-    order_transaction_date DATE,
+CREATE TABLE fact_orders (
+    order_id                VARCHAR PRIMARY KEY,
+
+    user_sk                 INT,
+    merchant_sk             INT,
+    staff_sk                INT,
+
+    order_transaction_date  DATE,
     order_estimated_arrival INT,
-    merchant_id           VARCHAR,
-    staff_id              VARCHAR,
 
     CONSTRAINT fk_orders_user
-        FOREIGN KEY (user_id) REFERENCES dim_user(user_id),
+        FOREIGN KEY (user_sk) REFERENCES dim_user(user_sk),
 
     CONSTRAINT fk_orders_merchant
-        FOREIGN KEY (merchant_id) REFERENCES dim_merchant(merchant_id),
+        FOREIGN KEY (merchant_sk) REFERENCES dim_merchant(merchant_sk),
 
     CONSTRAINT fk_orders_staff
-        FOREIGN KEY (staff_id) REFERENCES dim_staff(staff_id),
+        FOREIGN KEY (staff_sk) REFERENCES dim_staff(staff_sk),
 
     CONSTRAINT fk_orders_date
         FOREIGN KEY (order_transaction_date) REFERENCES dim_date(date_value)

@@ -56,7 +56,8 @@ SELECT
     AVG(o.order_estimated_arrival) AS avg_estimated_days
 FROM fact_orders o
 JOIN dim_merchant m
-    ON o.merchant_id = m.merchant_id
+    ON o.merchant_sk = m.merchant_sk
+    AND m.is_current = true
 GROUP BY m.merchant_name
 ORDER BY avg_estimated_days;
 
@@ -71,7 +72,8 @@ SELECT
     COUNT(o.order_id) AS total_orders
 FROM fact_orders o
 LEFT JOIN dim_user u
-    ON o.user_id = u.user_id
+    ON o.user_sk = u.user_sk
+    AND u.is_current = true
 GROUP BY u.user_id, u.user_full_name
 ORDER BY total_orders DESC;
 
@@ -85,7 +87,8 @@ SELECT
     COUNT(o.order_id) AS orders_fulfilled
 FROM fact_orders o
 JOIN dim_staff s
-    ON o.staff_id = s.staff_id
+    ON o.staff_sk = s.staff_sk
+    AND s.is_current = true
 GROUP BY s.staff_full_name
 ORDER BY orders_fulfilled DESC;
 

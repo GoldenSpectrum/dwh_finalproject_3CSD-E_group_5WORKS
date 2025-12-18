@@ -1,8 +1,6 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df_scd2
 
 def transform_dim_user():
-
-    truncate_table("dim_user")
 
     user = dedupe(fetch_df("SELECT * FROM stg_user_data"), key="user_id", ts_col="creation_date")
     job = dedupe(fetch_df("SELECT * FROM stg_user_job"), key="user_id")
@@ -40,7 +38,23 @@ def transform_dim_user():
         "user_credit_card_number", "user_issuing_bank"
     ]]
 
-    load_df(df, "dim_user")
+    load_df_scd2(
+    df,
+    table_name="dim_user",
+    business_key="user_id",
+    tracked_cols=[
+        "user_full_name",
+        "user_street_address",
+        "user_city",
+        "user_state",
+        "user_country",
+        "user_job_title",
+        "user_job_level",
+        "user_credit_card_number",
+        "user_issuing_bank"
+    ]
+)
+
 
 
 def dedupe(df, key="user_id", ts_col=None):

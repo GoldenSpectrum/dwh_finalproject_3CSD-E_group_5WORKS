@@ -1,7 +1,6 @@
 from transform.utils import fetch_df, load_df, truncate_table
 
 def transform_dim_product():
-    truncate_table("dim_product")
 
     df = fetch_df("SELECT * FROM stg_product_list")
 
@@ -15,4 +14,4 @@ def transform_dim_product():
         "product_id", "product_name", "product_type", "product_price"
     ]]
 
-    load_df(df, "dim_product")
+    load_df(df, "dim_product", conflict_cols=["product_id"])

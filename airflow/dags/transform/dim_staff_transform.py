@@ -1,7 +1,6 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df_scd2
 
 def transform_dim_staff():
-    truncate_table("dim_staff")
 
     df = fetch_df("SELECT * FROM stg_staff_data")
 
@@ -27,4 +26,17 @@ def transform_dim_staff():
         "staff_country", "staff_contact_number", "staff_creation_date"
     ]]
 
-    load_df(df, "dim_staff")
+    load_df_scd2(
+        df,
+        table_name="dim_staff",
+        business_key="staff_id",
+        tracked_cols=[
+            "staff_full_name",
+            "staff_job_level",
+            "staff_street_address",
+            "staff_state",
+            "staff_city",
+            "staff_country",
+            "staff_contact_number"
+        ]
+    )

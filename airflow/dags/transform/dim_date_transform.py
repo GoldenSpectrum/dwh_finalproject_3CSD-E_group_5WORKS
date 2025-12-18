@@ -1,8 +1,7 @@
-from transform.utils import fetch_df, load_df, truncate_table
+from transform.utils import fetch_df, load_df_insert_only, truncate_table
 import pandas as pd
 
 def transform_dim_date():
-    truncate_table("dim_date")
 
     # Fetch raw transaction dates from staging
     order_dates = fetch_df("SELECT transaction_date FROM stg_order_data")
@@ -30,4 +29,4 @@ def transform_dim_date():
     df["week_of_year"] = df["date_value"].dt.isocalendar().week.astype(int)
 
     # Load into dimension table
-    load_df(df, "dim_date")
+    load_df_insert_only(df, "dim_date")
